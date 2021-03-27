@@ -1,11 +1,11 @@
 package ro.gligor.currencyconverter;
 
 import javafx.application.Application;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -14,6 +14,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.*;
+
+import static javafx.geometry.Pos.CENTER;
 
 public class CurrencyConverter extends Application {
 
@@ -56,7 +58,8 @@ public class CurrencyConverter extends Application {
         convertButton.setOnAction(e -> convert(amountToConvert.getText(), fromCurrency.getValue(), toCurrency.getValue()));
 
         VBox layout = new VBox();
-//        layout.setPadding(new Insets(100,150, 100, 150));
+        layout.setAlignment(CENTER);
+        layout.setPadding(new Insets(75,100, 75, 100));
         layout.getChildren().addAll(amountToConvert, fromCurrency, toCurrency, convertButton, convertedAmountLabel);
 
         Scene scene = new Scene(layout, 400, 300);
@@ -94,13 +97,9 @@ public class CurrencyConverter extends Application {
                         }
                         br.close();
 
-                        System.out.println(response.toString().length());
-
-
                         String[] splitResponse = response.toString().split(":");
                         if (splitResponse.length != 2) {
-                            //todo
-                            throw new RuntimeException();
+                            throw new RuntimeException("Check the API Connection");
                         }
                         rate = Double.parseDouble(splitResponse[1].replace("}", ""));
 
@@ -128,10 +127,6 @@ public class CurrencyConverter extends Application {
                 convertedAmountLabel.setText("Please check the amount to convert");
             }
         }
-
-    public void setAmountToConvert(String amountToConvert) {
-        this.amountToConvert.setText(amountToConvert);
-    }
 
     public String getConvertedAmountLabel() {
         return convertedAmountLabel.getText();
